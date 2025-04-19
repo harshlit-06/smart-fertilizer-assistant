@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Urea",
+    "type": "Fertilizer",
+    "price": 300,
+    "suitability": "low",
+    "crops": ["wheat", "rice"],
+    "usage": "Use 50kg per acre before sowing.",
+    "organicOnly": false
+  },
+  {
+    "name": "Vermicompost",
+    "type": "Fertilizer",
+    "price": 200,
+    "suitability": "high",
+    "crops": ["vegetables", "fruits"],
+    "usage": "Mix with soil at root level.",
+    "organicOnly": true
+  },
+  {
+    "name": "Neem Oil",
+    "type": "Pesticide",
+    "price": 150,
+    "suitability": "all",
+    "crops": ["cotton", "vegetables"],
+    "usage": "Spray during early infestation.",
+    "organicOnly": true
+  }
+]

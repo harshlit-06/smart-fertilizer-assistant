@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Smart Fertilizer Assistant</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f4f6f7; }
+    .form-box { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+    select, input, button { width: 100%; padding: 10px; margin: 10px 0; }
+  </style>
+</head>
+<body>
+  <div class="form-box">
+    <h2 id="title">Smart Fertilizer Assistant</h2>
+
+    <label for="language">Language / भाषा:</label>
+    <select id="language" onchange="toggleLanguage()">
+      <option value="en">English</option>
+      <option value="hi">हिन्दी</option>
+    </select>
+
+    <label id="tdsLabel" for="tds">Enter Soil TDS (ppm):</label>
+    <input type="number" id="tds" placeholder="e.g. 300" />
+
+    <p style="text-align: center;">-- OR --</p>
+
+    <label id="cropLabel" for="crop">Enter Crop Name:</label>
+    <input type="text" id="crop" placeholder="e.g. Wheat / गेहूं" />
+
+    <button onclick="fetchSuggestions()">Get Suggestions</button>
+
+    <div id="results"></div>
+  </div>
+
+  <script>
+    function toggleLanguage() {
+      const lang = document.getElementById('language').value;
+      document.getElementById('title').innerText = lang === 'hi' ? 'स्मार्ट उर्वरक सहायक' : 'Smart Fertilizer Assistant';
+      document.getElementById('tdsLabel').innerText = lang === 'hi' ? 'मृदा TDS दर्ज करें (ppm):' : 'Enter Soil TDS (ppm):';
+      document.getElementById('cropLabel').innerText = lang === 'hi' ? 'फसल का नाम दर्ज करें:' : 'Enter Crop Name:';
+    }
+
+    async function fetchSuggestions() {
+      const tds = document.getElementById('tds').value;
+      const crop = document.getElementById('crop').value;
+      const lang = document.getElementById('language').value;
+
+      const res = await fetch('http://localhost:3000/api/suggestions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ tds, crop, lang })
+      });
+
+      const data = await res.json();
+      const results = document.getElementById('results');
+      results.innerHTML = `<h3>Suggestions:</h3><ul>` + data.suggestions.map(item =>
+        `<li>${item.name} (${item.type}) - ₹${item.price}<br><small>Use: ${item.usage}</small></li>`
+      ).join('') + `</ul>`;
+    }
+  </script>
+</body>
+</html>
